@@ -602,8 +602,9 @@ namespace Calendar.ASP.NET.MVC5.Controllers
         }
         #endregion
 
-        #region Add Event
         //Add an event
+        #region Add Event
+
         [HttpPost]
 
         public async Task<ActionResult> AddEvent(string EventSummary, string EventLocation, string EventDescription, string EventStartDate, string EventStartTime, string EventEndDate, string EventEndTime, string Remind  )
@@ -938,6 +939,36 @@ namespace Calendar.ASP.NET.MVC5.Controllers
             int key = Int32.Parse(customTaskContent);
             controller.DeleteConfirmed(key);
             return Content("");
+        }
+        #endregion
+
+        //Adding daily suggestion to tasks
+        #region DailySugg()
+        [HttpPost]
+        public async Task<ActionResult> DailySugg(string sugg)
+        {
+
+            var credential = await GetCredentialForApiAsync();
+
+            //Add a new task
+            var initializer3 = new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "MetaHealth",
+            };
+            var service3 = new TasksService(initializer3);
+
+            Google.Apis.Tasks.v1.Data.Tasks tasks = service3.Tasks.List("@default").Execute();
+
+            Google.Apis.Tasks.v1.Data.Task task = new Google.Apis.Tasks.v1.Data.Task { Title = sugg };
+
+            Google.Apis.Tasks.v1.Data.Task newTask = service3.Tasks.Insert(task, "@default").Execute();
+
+            UpcomingEventsViewModel model = await GetCurrentEventsTask();
+
+            ModelState.Clear();
+
+            return View("UpcomingEvents", model);
         }
         #endregion
     }
