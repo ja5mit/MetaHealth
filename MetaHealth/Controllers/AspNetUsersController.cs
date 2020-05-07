@@ -28,9 +28,9 @@ namespace MetaHealth.Controllers
             AspNetUser aspNetUser = db.AspNetUsers.Find(userId);
             if (aspNetUser == null)
             {
-                return HttpNotFound();
+               return HttpNotFound();
             }
-            return View(aspNetUser);   
+            return View();   
         }
    
         [HttpPost]
@@ -48,7 +48,7 @@ namespace MetaHealth.Controllers
                 db.SaveChanges();
                 return RedirectToAction("UpcomingEvents","Calendar");
             }
-            return View(aspNetUser);
+            return View();
         }
 
         protected override void Dispose(bool disposing)
