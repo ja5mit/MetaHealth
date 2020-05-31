@@ -261,17 +261,3 @@ function AddSuggestion() {
         error: errorOnAjax
     });
 }
-function CheckDate(start, end) {
-    //var startdate = Date.parse(start); 
-    //var enddate = Date.parse(end);
-
-    var startdate = parseInt(start, 10);
-    var enddate = parseInt(end, 10);
-    if (startdate > enddate) {
-        alert("Please make sure the start date is earlier or the same as the end date!");
-    }
-    else {
-        alert(start);
-    }
-
-}
